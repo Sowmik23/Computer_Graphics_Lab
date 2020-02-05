@@ -44,6 +44,9 @@ int x0click,y0click,x1click,y1click;
 
 int call;
 int x_0, x_1, y_0, y_1;
+
+int flag1=0,flag2=0;
+
 /* GLUT callback Handlers */
 
 static void resize(int width, int height){
@@ -220,13 +223,20 @@ void cohen_Sutherland(double x0,double y0,double x1,double y1)
 
     code0 = makeCode(x0,y0);
     code1 = makeCode(x1,y1);
-
+    int ff=0;
+    int f0=0;
     while(true)
     {
-        
+        ff++;
+
         if ((code0 == 0) && (code1 == 0)) //fully accepted
         {
-
+        	
+        	if(ff==1){
+        		if(f0!=0) printf("Fully Accepted\n");
+        		f0++;
+        	}
+        
             // glEnd();
             // glPointSize(4);
             // glColor3f(1.0,1.0,1.0);
@@ -245,7 +255,7 @@ void cohen_Sutherland(double x0,double y0,double x1,double y1)
         }
         else if (code0 & code1)//fully rejected
         {
-
+        	if(ff==1) printf("Fully Rejected\n");
             // glColor3f(1.0, 0.0, 0.0);///Red
             // drawLine(x0,y0,x1,y1);
             break;
@@ -253,6 +263,7 @@ void cohen_Sutherland(double x0,double y0,double x1,double y1)
         }
         else //partial
         {
+        	if(ff==1) printf("Partial Accepted\n");
             int code; 
             double x, y; 
 
@@ -307,6 +318,9 @@ void cohen_Sutherland(double x0,double y0,double x1,double y1)
     
     }//while loop
     glEnd();
+    //if(flag1==1) printf("Fully Accepted\n");
+  //  else if(flag2==1) printf("Partial Accepted\n");
+    //else printf("Fully Rejected\n");
 
 }//end of function
 
@@ -363,9 +377,11 @@ static void display(void){
 	glBegin(GL_POINTS);
 
 	if (call % 2 == 0 and call) {
+		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);  //yellow point color
 		glVertex2i(x_0, y_0);
 		glVertex2i(x_1, y_1);
-		glVertex2i(x0click,y0click);
+		glColor4f(1.0f, 0.5f, 0.0f, 0.0f);//orange/brown
+		glVertex2i(x0click,y0click);  
 		glVertex2i(x1click,y1click);
 	}
 

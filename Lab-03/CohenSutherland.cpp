@@ -40,6 +40,7 @@ const int RIGHT     = 2;
 const int BOTTOM    = 4;
 const int TOP       = 8;
 
+int start=202;
 
 void myInit (void);
 void display(void);
@@ -252,19 +253,19 @@ int x_1 = 200;
 int y_1 = 200;
 
 int cnt=0;
-int start=202;
+
 
 void myMouse (int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON and state == GLUT_UP) {
 		int a,b,c,d;
-		if(cnt%4==0){
+		if(cnt%2==1){
 			a =x-320;
 			b = 240-y;
 			x_0 = a;
 			y_0 = b;
 			printf("a,b: %d %d\n",a,b);
 		}
-		else if(cnt%4==2){
+		else if(cnt%2==0){
 			c =x-320;
 			d = 240-y;
 			x_1 = c;
@@ -272,6 +273,7 @@ void myMouse (int button, int state, int x, int y) {
 			printf("c,d: %d %d\n",c,d);
 			start = 101;
 			printf("%d %d %d %d\n",x_0,y_0,x_1,y_1);
+			printf("changed start: %d\n",start );
 		}
 		cnt++;
 	}
@@ -402,9 +404,9 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0, 0, 0);
     GridDraw();
-    
+    // glBegin(GL_LINES);
 
-	//glBegin(GL_POINTS);
+	glBegin(GL_POINTS);
 
 
 /*   int x0 = -200;
@@ -416,8 +418,8 @@ void display()
     // drawPixel(x1,y1);
 
    // srand(time(NULL));
-
- /*   int numberOfLines = 100;
+/*
+    int numberOfLines = 100;
     for(int i=0; i<=numberOfLines; i++)
     {
         int x0 = -320 + rand()%640;
@@ -426,24 +428,22 @@ void display()
         int y1 = -240 + rand()%480;
 
         cohen_Sutherland(x0,y0,x1,y1);
-    }
- */ 
-	glutMouseFunc(myMouse);
-glutMouseFunc(myMouse);
-glutMouseFunc(myMouse);
-glutMouseFunc(myMouse);
+    }*/
+ 
 
-	if(start==202){
+	/*if(start==202){
 		glutMouseFunc(myMouse);
 		glutMouseFunc(myMouse);
 		printf("%d cnt start %d\n",cnt,start);
+		cohen_Sutherland(x_0,y_0,x_1,y_1); 
 	
 		if(start==101){ 
 			printf("*********************hhkjhkhjhkhkjkjh %d %d %d %d\n",x_0,y_0,x_1,y_1); 
 			cohen_Sutherland(x_0,y_0,x_1,y_1); 
 			start = 202;
 		}
-	}
+	}*/
+
 	if(start==101){ 
 		printf("##########################hhkjhkhjhkhkjkjh %d %d %d %d\n",x_0,y_0,x_1,y_1); 
 		cohen_Sutherland(x_0,y_0,x_1,y_1); 
@@ -451,13 +451,13 @@ glutMouseFunc(myMouse);
 	}
 	
 
-//cohen_Sutherland(x_0,y_0,x_1,y_1); 
+cohen_Sutherland(x_0,y_0,x_1,y_1); 
 	
 
 
 
     
-    //glEnd();
+    glEnd();
     glFlush();
 }
 
@@ -507,9 +507,10 @@ int main (int argc, char **argv)
     glutCreateWindow ("Graphics Lab 2"); // creates the window and sets the title
     myInit(); // additional initializations as necessary
     glutReshapeFunc(reshape);
-    glutDisplayFunc (display);
+    glutDisplayFunc(display);
 
-	//glutKeyboardFunc(key);
+	glutKeyboardFunc(key);
+	glutMouseFunc(myMouse);
 	//glutIdleFunc(idle);
     glutMainLoop(); // go into a loop until event occurs
     return 0;
